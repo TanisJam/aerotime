@@ -5,6 +5,7 @@ import axiosInstance from '@/services/api.service';
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const query = searchParams.get('query');
+  const type = searchParams.get('type');
   const clientId = process.env.TWITCH_CLIENT_ID!;
 
   if (!query) {
@@ -13,9 +14,14 @@ export async function GET(request: Request) {
 
   try {
     const token = await getAccessToken();
+    const fields =
+      type === 'suggestions'
+        ? 'fields name,cover.url; limit 5;'
+        : 'fields name,cover.url,first_release_date;';
+
     const response = await axiosInstance.post(
       '/games',
-      `search "${query}"; fields name,cover.url,first_release_date;`,
+      `search "${query}"; ${fields}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -23,6 +29,7 @@ export async function GET(request: Request) {
         },
       }
     );
+
     return NextResponse.json(response.data);
   } catch (error: unknown) {
     return NextResponse.json(

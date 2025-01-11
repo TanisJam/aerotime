@@ -20,7 +20,6 @@ interface LayoutProps {
       id: number;
       url: string;
     };
-    first_release_date: number;
     name: string;
   }[];
 }

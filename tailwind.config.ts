@@ -57,6 +57,7 @@ export default {
           black: '#000000',
           purple: '#775C90',
           pink: '#FF00AE',
+          pinkLight: '#FF00AE29',
           gray: '#666666',
         },
       },

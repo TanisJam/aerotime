@@ -3,7 +3,7 @@ import fetcher from '@/lib/fetcher.lib';
 
 export const useGamesSuggestions = (query: string) => {
   const { data, error, isLoading } = useSWR(
-    query ? `/api/games?query=${query}` : null,
+    query ? `/api/games?query=${query}&type=suggestions` : null,
     fetcher,
     { revalidateOnFocus: false }
   );
@@ -17,7 +17,7 @@ export const useGamesSuggestions = (query: string) => {
 
 export const useGamesSearch = (query: string) => {
   const { data, error, isLoading } = useSWR(
-    query ? `/api/games/search?query=${query}` : null,
+    query ? `/api/games?query=${query}&type=search` : null,
     fetcher
   );
 
