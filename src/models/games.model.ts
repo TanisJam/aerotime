@@ -3,7 +3,6 @@ type BaseEntity = {
   name: string;
 };
 
-
 export interface Cover {
   id: number;
   url: string;
@@ -23,7 +22,7 @@ export interface InvolvedCompany {
 
 export interface IGDBGame extends BaseEntity {
   cover: Cover;
-  first_release_date: number;
+  first_release_date: number | null;
   genres: BaseEntity[];
   platforms: BaseEntity[];
   rating: number;
@@ -31,6 +30,17 @@ export interface IGDBGame extends BaseEntity {
   similar_games: SimilarGame[];
   summary: string;
   yearsAgo: number | null;
-  releaseDate: string | null;
   involved_companies: InvolvedCompany[];
+}
+
+export interface SavedGame
+  extends Pick<IGDBGame, 'id' | 'name' | 'first_release_date'> {
+  image: string;
+  savedAt: number;
+}
+
+export enum SortType {
+  LAST_ADDED = 'last-added',
+  NEWEST = 'newest',
+  OLDEST = 'oldest'
 }
