@@ -14,7 +14,7 @@ interface LayoutProps {
   query: string;
   loading?: boolean;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onSelection: (name: string) => void;
+  onSelection: (name: string, id: number) => void;
   suggestions: {
     id: number;
     cover?: {
@@ -146,7 +146,7 @@ export const Layout = ({
               {suggestions.map((game, index) => (
                 <motion.button
                   key={game.id}
-                  onClick={() => onSelection(game.name)}
+                  onClick={() => onSelection(game.name, game.id)}
                   className="flex w-full items-center gap-3 rounded-lg p-[6px] text-left hover:bg-purple-50"
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -158,9 +158,8 @@ export const Layout = ({
                     <CustomImage
                       src={game.cover?.url}
                       alt={game.name}
-                      height={30}
-                      width={30}
                       className="object-cover"
+                      size='cover_small'
                     />
                   </div>
                   <span className="text-sm text-purple-900">{game.name}</span>

@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import { Inter, Readex_Pro } from 'next/font/google';
 import './globals.css';
-import { Header, Layout } from '@/components/header';
+import { Header, Background } from '@/components/header';
+import { TITLE } from '@/models/constants';
 
 const inter = Inter({
   variable: '--font-inter',
@@ -14,7 +15,7 @@ const readexPro = Readex_Pro({
 });
 
 export const metadata: Metadata = {
-  title: 'AeroTime',
+  title: TITLE,
   description: 'Your gaming time, your legacy of fun.',
 };
 
@@ -24,13 +25,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="pointer-events-none ">
+    <html lang="en">
       <body
-        className={`${inter.variable} ${readexPro.variable} antialiased relative pointer-events-none`}
+        className={`${inter.variable} ${readexPro.variable} antialiased relative`}
       >
         <Header />
         {children}
-        <Layout />
+        <Background />
       </body>
     </html>
   );

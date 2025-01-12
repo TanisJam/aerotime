@@ -1,21 +1,15 @@
 import { create } from 'zustand';
-
-const WORD = ['a', 'e', 'r', 'o', 't', 'i', 'm', 'e'];
-export const INTERACTIONS_MESSAGES = [
-  'Keep going!',
-  'Almost there!',
-  'You can do it!',
-  'Just a little more!',
-  'You got this!',
-  'You did it!',
-];
-const INTERACTIONS_NEEDED = 6;
-const TIME_BETWEEN_INTERACTIONS = 2000;
+import {
+  WORD,
+  INTERACTIONS_NEEDED,
+  TIME_BETWEEN_INTERACTIONS,
+} from '@/models/constants';
 
 interface KeycapsState {
   collectedKeycaps: string[];
   addKeycap: (keycap: string) => boolean;
   setGamemode: () => void;
+  restartGame: () => void;
   completed: boolean;
   gamemode: boolean;
   interactionsCount: number;
@@ -72,6 +66,15 @@ export const useKeycapsStore = create<KeycapsState>((set) => ({
         lastInteraction: now,
         gamemode: false,
       };
+    });
+  },
+  restartGame: () => {
+    set({
+      collectedKeycaps: [],
+      interactionsCount: 0,
+      lastInteraction: 0,
+      completed: false,
+      gamemode: false,
     });
   },
   completed: false,
