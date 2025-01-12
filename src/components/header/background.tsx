@@ -2,7 +2,7 @@ import { useKeycapsStore } from '@/store/keycaps-store';
 import { FloatingKeycaps } from './floating-keycaps';
 import { cn } from '@/lib/utils';
 
-export const Layout = () => {
+export const Background = () => {
   const { gamemode } = useKeycapsStore();
 
   return (

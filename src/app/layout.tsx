@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter, Readex_Pro } from 'next/font/google';
 import './globals.css';
-import { Header, Layout } from '@/components/header';
+import { Header, Background } from '@/components/header';
 import { TITLE } from '@/models/constants';
 
 const inter = Inter({
@@ -31,7 +31,7 @@ export default function RootLayout({
       >
         <Header />
         {children}
-        <Layout />
+        <Background />
       </body>
     </html>
   );
