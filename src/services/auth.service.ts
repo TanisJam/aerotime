@@ -5,7 +5,6 @@ let tokenExpiry: number | null = null;
 
 export async function getAccessToken(): Promise<string> {
   if (cachedToken && tokenExpiry && Date.now() < tokenExpiry) {
-    console.log('Returning cached token');
     return cachedToken;
   }
 

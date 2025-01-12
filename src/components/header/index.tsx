@@ -1,4 +1,5 @@
 'use client';
+import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import Confetti from 'react-confetti';
@@ -11,12 +12,12 @@ import { Button } from '../ui/button';
 import Typography from '../typography';
 
 export const Header = () => {
+  const router = useRouter();
   const pathname = usePathname();
   const { gamemode, restartGame, completed } = useKeycapsStore();
 
   useEffect(() => {
     if (completed) {
-      console.log('completed');
       setTimeout(() => restartGame(), 10000);
     }
   }, [completed, restartGame]);
@@ -41,7 +42,7 @@ export const Header = () => {
               variant={'icon'}
               size={'iconSm'}
               asChild
-              onClick={() => window.history.back()}
+              onClick={() => router.back()}
               className="text-violet-900"
             >
               <ArrowLeft size={20} />

@@ -25,9 +25,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="pointer-events-none ">
+    <html lang="en">
       <body
-        className={`${inter.variable} ${readexPro.variable} antialiased relative pointer-events-none`}
+        className={`${inter.variable} ${readexPro.variable} antialiased relative`}
       >
         <Header />
         {children}

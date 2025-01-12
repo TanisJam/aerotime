@@ -19,10 +19,9 @@ export const SearchBar = () => {
   const onSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
   };
-  const onSelection = (name: string) => {
+  const onSelection = (name: string, id: number) => {
     setSearchQuery(name);
-    console.log('Selected:', name);
-    router.push(`/games/${generateSlug(name)}`);
+    router.push(`/games/${id}/${generateSlug(name)}`);
   };
 
   return (
