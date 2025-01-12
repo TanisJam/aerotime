@@ -3,13 +3,13 @@ import { Metadata } from 'next';
 import { generateSlug } from '@/lib/slugify.lib';
 import CustomImage from '@/components/custom-image';
 import { Star, Calendar, PuzzleIcon } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { fetchGameDetails } from '@/services/api.service';
 import { getAccessToken } from '@/services/auth.service';
 import { ImageGallery } from '@/components/image-gallery';
 import Typography from '@/components/typography';
 import { Chip } from '@/components/ui/chip';
 import Link from 'next/link';
+import { CollectButton } from '@/components/collect-button';
 
 type Props = {
   params: Promise<{ id: string; name: string }>;
@@ -35,8 +35,8 @@ export default async function Page({ params }: Props) {
   const clientId = process.env.TWITCH_CLIENT_ID!;
   const [gameData] = await fetchGameDetails(Number(id), token, clientId);
 
-  const formattedReleaseDate = gameData.releaseDate
-    ? new Date(gameData.releaseDate).toLocaleDateString()
+  const formattedReleaseDate = gameData.first_release_date
+    ? new Date(gameData.first_release_date * 1000).toLocaleDateString()
     : 'No date available';
 
   return (
@@ -60,8 +60,12 @@ export default async function Page({ params }: Props) {
           </div>
         </div>
 
-        <Button variant="collect">Collect game</Button>
-        <Button variant="collected">Game collected</Button>
+        <CollectButton
+          id={gameData.id}
+          name={gameData.name}
+          image={gameData.cover.url}
+          first_release_date={gameData.first_release_date}
+        />
 
         {/* Rating & Release */}
         <div className="flex flex-wrap gap-2">
@@ -117,7 +121,7 @@ export default async function Page({ params }: Props) {
                 className="aspect-[3/4] relative hover:scale-105 hover:shadow-lg transition-transform"
               >
                 <CustomImage
-                  src={game.cover.url}
+                  src={game.cover?.url}
                   alt={game.name}
                   className="rounded-lg object-cover"
                   size="cover_big"

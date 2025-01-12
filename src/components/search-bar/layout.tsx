@@ -62,7 +62,10 @@ export const Layout = ({
   }, [onChange]);
 
   return (
-    <div ref={containerRef} className="relative w-[90vw] max-w-[400px] mb-8 sm:mx-auto">
+    <div
+      ref={containerRef}
+      className="relative w-[90vw] max-w-[400px] mb-8 sm:mx-auto z-50"
+    >
       <motion.div
         className="bg-white shadow-sm backdrop-blur-sm border border-pink-600/20"
         animate={{
@@ -159,7 +162,7 @@ export const Layout = ({
                       src={game.cover?.url}
                       alt={game.name}
                       className="object-cover"
-                      size='cover_small'
+                      size="cover_small"
                     />
                   </div>
                   <span className="text-sm text-purple-900">{game.name}</span>
