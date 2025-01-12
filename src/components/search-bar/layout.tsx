@@ -14,6 +14,7 @@ interface LayoutProps {
   query: string;
   loading?: boolean;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onSelection: (name: string) => void;
   suggestions: {
     id: number;
     cover?: {
@@ -29,6 +30,7 @@ export const Layout = ({
   query,
   loading,
   onChange,
+  onSelection,
 }: LayoutProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -36,9 +38,11 @@ export const Layout = ({
   const showResults = query.length > 0;
 
   const calculateHeight = () => {
-    const ITEM_HEIGHT = 48;
-    const PADDING = 16;
-    return `${ITEM_HEIGHT * suggestions.length + PADDING}px`;
+    const ITEM_HEIGHT = 44;
+    const PADDING = 20;
+    const MAX_HEIGHT = 222;
+    const calculatedHeight = ITEM_HEIGHT * suggestions.length + PADDING;
+    return `${Math.min(calculatedHeight, MAX_HEIGHT)}px`;
   };
 
   useEffect(() => {
@@ -58,7 +62,7 @@ export const Layout = ({
   }, [onChange]);
 
   return (
-    <div ref={containerRef} className="relative w-[90vw] max-w-[400px]">
+    <div ref={containerRef} className="relative w-[90vw] max-w-[400px] mb-8">
       <motion.div
         className="bg-white shadow-sm backdrop-blur-sm border border-pink-600/20"
         animate={{
@@ -118,10 +122,10 @@ export const Layout = ({
         <AnimatePresence>
           {showResults && (
             <motion.div
-              className="absolute left-0 right-0 top-full bg-white rounded-b-[20px] outline outline-1 outline-pink-600/20 shadow-lg backdrop-blur-sm z-10 p-2"
+              className="absolute left-0 right-0 top-full bg-white rounded-b-[20px] outline outline-1 outline-pink-600/20 shadow-lg backdrop-blur-sm z-10 p-[6px] overflow-y-scroll"
               initial={{
                 opacity: 0,
-                height: 0,
+                height: 'auto',
                 transformOrigin: 'top',
                 borderRadius: `${BORDER_RADIUS} ${BORDER_RADIUS} ${BORDER_RADIUS} ${BORDER_RADIUS}`,
               }}
@@ -142,13 +146,8 @@ export const Layout = ({
               {suggestions.map((game, index) => (
                 <motion.button
                   key={game.id}
-                  onClick={() => {
-                    onChange({
-                      target: { value: game.name },
-                    } as React.ChangeEvent<HTMLInputElement>);
-                    inputRef.current?.focus();
-                  }}
-                  className="flex w-full items-center gap-3 rounded-lg px-2 py-2 text-left hover:bg-purple-50"
+                  onClick={() => onSelection(game.name)}
+                  className="flex w-full items-center gap-3 rounded-lg p-[6px] text-left hover:bg-purple-50"
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}
@@ -159,8 +158,8 @@ export const Layout = ({
                     <CustomImage
                       src={game.cover?.url}
                       alt={game.name}
-                      height={32}
-                      width={32}
+                      height={30}
+                      width={30}
                       className="object-cover"
                     />
                   </div>

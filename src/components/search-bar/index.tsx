@@ -2,8 +2,11 @@
 import { useState } from 'react';
 import { Layout } from './layout';
 import { useGamesSuggestions, useDebounce } from '@/hooks';
+import { generateSlug } from '@/lib/slugify.lib';
+import { useRouter } from 'next/navigation';
 
 export const SearchBar = () => {
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const debouncedSearch = useDebounce(searchQuery, 500);
   const { suggestions, error, isLoading } =
@@ -16,6 +19,11 @@ export const SearchBar = () => {
   const onSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
   };
+  const onSelection = (name: string) => {
+    setSearchQuery(name);
+    console.log('Selected:', name);
+    router.push(`/games/${generateSlug(name)}`);
+  };
 
   return (
     <Layout
@@ -23,6 +31,7 @@ export const SearchBar = () => {
       query={searchQuery}
       onChange={onSearch}
       loading={isLoading}
+      onSelection={onSelection}
     />
   );
 };

@@ -16,7 +16,7 @@ export async function GET(request: Request) {
     const token = await getAccessToken();
     const fields =
       type === 'suggestions'
-        ? 'fields name,cover.url; limit 5;'
+        ? 'fields name,cover.url;'
         : 'fields name,cover.url,first_release_date;';
 
     const response = await axiosInstance.post(

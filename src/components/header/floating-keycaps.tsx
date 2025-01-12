@@ -9,6 +9,8 @@ import { useKeycapsStore } from '@/store/keycaps-store';
 const DEBUG = false;
 
 const AUDIO_URL = './key-press.mp3';
+const TIRULIC_URL = './tirulic.mp3';
+const MUSIC_URL = './walking-through-dream.mp3';
 const LETTERS = [
   'W',
   'A',
@@ -27,7 +29,7 @@ const LETTERS = [
 const KEYCAPS_TO_SHOW = 7;
 
 export const FloatingKeycaps = () => {
-  const { addKeycap } = useKeycapsStore();
+  const { addKeycap, gamemode } = useKeycapsStore();
   const [activeKeycaps, setActiveKeycaps] = useState<Keycap[]>([]);
   const [inactiveKeycaps, setInactiveKeycaps] = useState<Keycap[]>([]);
 
@@ -68,11 +70,26 @@ export const FloatingKeycaps = () => {
     const keycap = event.currentTarget;
     const keycapLetter = keycap.textContent;
     const sound = new Audio(AUDIO_URL);
+    sound.volume = 1;
     sound.play();
     if (keycapLetter) {
-      addKeycap(keycapLetter.toLocaleLowerCase());
+      const add = addKeycap(keycapLetter.toLocaleLowerCase());
+      if (add) {
+        const tirulic = new Audio(TIRULIC_URL);
+        tirulic.play();
+      }
     }
   };
+
+  useEffect(() => {
+    if (gamemode) {
+      const music = new Audio(MUSIC_URL);
+      music.volume = 0.3;
+      music.loop = true;
+      music.play();
+    }
+
+  }, [gamemode]);
 
   return (
     <>
@@ -82,10 +99,11 @@ export const FloatingKeycaps = () => {
             key={`${keycap.id}-${keycap.key}`}
             className="absolute"
             style={{ left: `${keycap.x}%` }}
-            initial={{ y: '400px', rotate: 0 }}
+            initial={{ y: '400px', rotate: 0, opacity: 0.3 }}
             animate={{
               y: '-120%',
               rotate: keycap.rotate,
+              opacity: [0, 0, 1, 1, 1, 1],
             }}
             transition={{
               duration: keycap.speed,

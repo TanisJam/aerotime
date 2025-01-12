@@ -1,13 +1,14 @@
 'use client';
 import { SearchBar } from '@/components/search-bar';
 import Typography from '@/components/typography';
-import { Layout } from './layout';
 import { Logo } from '@/components/icons/logo';
-import { useKeycapsStore } from '@/store/keycaps-store';
+import { useKeycapsStore, INTERACTIONS_MESSAGES } from '@/store/keycaps-store';
 import { motion } from 'framer-motion';
+import Tooltip from '../tooltip';
 
 export const Header = () => {
-  const { collectedKeycaps } = useKeycapsStore();
+  const { collectedKeycaps, gamemode, setGamemode, interactionsCount } =
+    useKeycapsStore();
 
   const animateEffect = {
     textShadow: [
@@ -21,6 +22,13 @@ export const Header = () => {
     ],
   };
 
+  const defaultEffect = {
+    textShadow: ['none', 'none', 'none', 'none', 'none', 'none', 'none'],
+  };
+
+  const isCorrect = (i: number) =>
+    collectedKeycaps[i] === Array.from('AeroTime')[i].toLowerCase();
+
   const transitionEffect = {
     duration: 1,
     repeat: Infinity,
@@ -28,26 +36,30 @@ export const Header = () => {
   };
 
   return (
-    <Layout>
-      <div className="flex gap-2 mt-8 mb-5">
+    <div className="mx-4 pointer-events-auto">
+      {gamemode && (
+        <div className="absolute top-0 left-0 w-full  pointer-events-none animate-pulse glow-border" />
+      )}
+      <div className="flex gap-2 pt-8 mb-5">
         <Logo />
-        <Typography.H1 className="my-auto">
-          {Array.from('AeroTime').map((letter, i) => (
-            <motion.span
-              key={`${letter}-${i}`}
-              animate={
-                collectedKeycaps[i] === letter.toLowerCase()
-                  ? animateEffect
-                  : {}
-              }
-              transition={transitionEffect}
-            >
-              {letter}
-            </motion.span>
-          ))}
-        </Typography.H1>
+        <Tooltip message={INTERACTIONS_MESSAGES[interactionsCount]}>
+          <Typography.H1 className="my-auto" onClick={() => setGamemode()}>
+            {Array.from('AeroTime').map((letter, i) => (
+              <motion.span
+                key={`${letter}-${i}`}
+                animate={isCorrect(i) ? animateEffect : defaultEffect}
+                transition={transitionEffect}
+                className={isCorrect(i) ? 'letter-underline' : ''}
+              >
+                {letter}
+              </motion.span>
+            ))}
+          </Typography.H1>
+        </Tooltip>
       </div>
       <SearchBar />
-    </Layout>
+    </div>
   );
 };
+
+export { Layout } from './layout';
