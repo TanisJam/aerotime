@@ -58,7 +58,7 @@ export const Layout = ({
   }, [onChange]);
 
   return (
-    <div ref={containerRef} className="relative w-full max-w-[400px]">
+    <div ref={containerRef} className="relative w-[90vw] max-w-[400px]">
       <motion.div
         className="bg-white shadow-sm backdrop-blur-sm border border-pink-600/20"
         animate={{

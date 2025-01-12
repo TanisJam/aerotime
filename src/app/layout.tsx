@@ -25,11 +25,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${readexPro.variable}  antialiased`}>
-        <Header>
-          <h1 className="text-4xl font-bold ">AeroTime</h1>
-          <p className="text-lg ">Your gaming time, your legacy of fun.</p>
-        </Header>
+      <body className={`${inter.variable} ${readexPro.variable} antialiased`}>
+        <Header />
         {children}
       </body>
     </html>

@@ -14,7 +14,7 @@ export const DebugKeycaps = ({
   inactiveKeycaps,
 }: DebugKeycapsProps) => {
   return (
-    <div className="absolute top-0 left-0 p-4 bg-black bg-opacity-50 text-white">
+    <div className="absolute bottom-0 left-0 p-4 bg-black bg-opacity-50 text-white z-50">
       <h2>Active keycaps</h2>
       {activeKeycaps
         .sort((a, b) => a.letter.charCodeAt(0) - b.letter.charCodeAt(0))

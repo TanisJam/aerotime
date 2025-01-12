@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { DebugKeycaps } from './debug';
 import { Keycap } from '@/models';
+import { useKeycapsStore } from '@/store/keycaps-store';
 
 const DEBUG = false;
 
@@ -26,6 +27,7 @@ const LETTERS = [
 const KEYCAPS_TO_SHOW = 7;
 
 export const FloatingKeycaps = () => {
+  const { addKeycap } = useKeycapsStore();
   const [activeKeycaps, setActiveKeycaps] = useState<Keycap[]>([]);
   const [inactiveKeycaps, setInactiveKeycaps] = useState<Keycap[]>([]);
 
@@ -67,7 +69,9 @@ export const FloatingKeycaps = () => {
     const keycapLetter = keycap.textContent;
     const sound = new Audio(AUDIO_URL);
     sound.play();
-    console.log(`Keycap clicked: ${keycapLetter}`);
+    if (keycapLetter) {
+      addKeycap(keycapLetter.toLocaleLowerCase());
+    }
   };
 
   return (
