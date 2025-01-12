@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter, Readex_Pro } from 'next/font/google';
 import './globals.css';
 import { Header, Layout } from '@/components/header';
+import { TITLE } from '@/models/constants';
 
 const inter = Inter({
   variable: '--font-inter',
@@ -14,7 +15,7 @@ const readexPro = Readex_Pro({
 });
 
 export const metadata: Metadata = {
-  title: 'AeroTime',
+  title: TITLE,
   description: 'Your gaming time, your legacy of fun.',
 };
 

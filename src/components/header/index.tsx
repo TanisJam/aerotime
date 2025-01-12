@@ -1,14 +1,25 @@
 'use client';
+
+import { useEffect } from 'react';
 import { SearchBar } from '@/components/search-bar';
 import Typography from '@/components/typography';
 import { Logo } from '@/components/icons/logo';
-import { useKeycapsStore, INTERACTIONS_MESSAGES } from '@/store/keycaps-store';
+import { useKeycapsStore } from '@/store/keycaps-store';
+import { TITLE, INTERACTIONS_MESSAGES } from '@/models/constants';
+
 import { motion } from 'framer-motion';
 import Tooltip from '../tooltip';
+import Confetti from 'react-confetti';
 
 export const Header = () => {
-  const { collectedKeycaps, gamemode, setGamemode, interactionsCount } =
-    useKeycapsStore();
+  const {
+    collectedKeycaps,
+    gamemode,
+    setGamemode,
+    restartGame,
+    interactionsCount,
+    completed,
+  } = useKeycapsStore();
 
   const animateEffect = {
     textShadow: [
@@ -27,7 +38,7 @@ export const Header = () => {
   };
 
   const isCorrect = (i: number) =>
-    collectedKeycaps[i] === Array.from('AeroTime')[i].toLowerCase();
+    collectedKeycaps[i] === Array.from(TITLE)[i].toLowerCase();
 
   const transitionEffect = {
     duration: 1,
@@ -35,8 +46,19 @@ export const Header = () => {
     repeatType: 'mirror' as const,
   };
 
+  useEffect(() => {
+    if (completed) {
+      console.log('completed');
+      setTimeout(() => restartGame(), 10000);
+    }
+  }, [completed, restartGame]);
+
   return (
     <div className="mx-4 pointer-events-auto">
+      {completed && (
+        <Confetti width={window.innerWidth} height={window.innerHeight} />
+      )}
+
       {gamemode && (
         <div className="absolute top-0 left-0 w-full  pointer-events-none animate-pulse glow-border" />
       )}
@@ -44,7 +66,7 @@ export const Header = () => {
         <Logo />
         <Tooltip message={INTERACTIONS_MESSAGES[interactionsCount]}>
           <Typography.H1 className="my-auto" onClick={() => setGamemode()}>
-            {Array.from('AeroTime').map((letter, i) => (
+            {Array.from(TITLE).map((letter, i) => (
               <motion.span
                 key={`${letter}-${i}`}
                 animate={isCorrect(i) ? animateEffect : defaultEffect}

@@ -1,37 +1,26 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { DebugKeycaps } from './debug';
 import { Keycap } from '@/models';
+import {
+  DEBUG,
+  AUDIO_URL,
+  TIRULIC_URL,
+  MUSIC_URL,
+  KEYCAPS_TO_SHOW,
+  LETTERS,
+} from '@/models/constants';
 import { useKeycapsStore } from '@/store/keycaps-store';
 
-const DEBUG = false;
-
-const AUDIO_URL = './key-press.mp3';
-const TIRULIC_URL = './tirulic.mp3';
-const MUSIC_URL = './walking-through-dream.mp3';
-const LETTERS = [
-  'W',
-  'A',
-  'S',
-  'D',
-  'E',
-  'Q',
-  'R',
-  'T',
-  'O',
-  'I',
-  'M',
-  'L',
-  'B',
-];
-const KEYCAPS_TO_SHOW = 7;
+// const KEYCAPS_TO_SHOW = 7;
 
 export const FloatingKeycaps = () => {
   const { addKeycap, gamemode } = useKeycapsStore();
   const [activeKeycaps, setActiveKeycaps] = useState<Keycap[]>([]);
   const [inactiveKeycaps, setInactiveKeycaps] = useState<Keycap[]>([]);
+  const musicRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     const allKeycaps = LETTERS.map(
@@ -82,13 +71,24 @@ export const FloatingKeycaps = () => {
   };
 
   useEffect(() => {
-    if (gamemode) {
-      const music = new Audio(MUSIC_URL);
-      music.volume = 0.3;
-      music.loop = true;
-      music.play();
+    if (!musicRef.current) {
+      musicRef.current = new Audio(MUSIC_URL);
+      musicRef.current.volume = 0.3;
+      musicRef.current.loop = true;
     }
 
+    if (gamemode) {
+      musicRef.current.play();
+    } else {
+      musicRef.current.pause();
+    }
+
+    return () => {
+      if (musicRef.current) {
+        musicRef.current.pause();
+        musicRef.current = null;
+      }
+    };
   }, [gamemode]);
 
   return (
