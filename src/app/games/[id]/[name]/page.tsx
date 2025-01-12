@@ -1,11 +1,15 @@
 import React from 'react';
 import { Metadata } from 'next';
+import { generateSlug } from '@/lib/slugify.lib';
 import CustomImage from '@/components/custom-image';
-import { Star } from 'lucide-react';
+import { Star, Calendar, PuzzleIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { fetchGameDetails } from '@/services/api.service';
 import { getAccessToken } from '@/services/auth.service';
 import { ImageGallery } from '@/components/image-gallery';
+import Typography from '@/components/typography';
+import { Chip } from '@/components/ui/chip';
+import Link from 'next/link';
 
 type Props = {
   params: Promise<{ id: string; name: string }>;
@@ -43,74 +47,82 @@ export default async function Page({ params }: Props) {
           <CustomImage
             src={gameData.cover.url}
             alt={gameData.name}
-            size="cover_big"
+            size="cover_small"
             className="rounded-xl"
           />
           <div>
-            <h1 className="text-xl font-semibold">{gameData.name}</h1>
-            <p className="text-sm text-muted-foreground">
+            <Typography.H1>{gameData.name}</Typography.H1>
+            <Typography.H3>
               {gameData.involved_companies
                 .map((company) => company.company.name)
                 .join(', ')}
-            </p>
+            </Typography.H3>
           </div>
         </div>
 
-        {/* Collect Button */}
-        <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white">
-          Collect game
-        </Button>
+        <Button variant="collect">Collect game</Button>
+        <Button variant="collected">Game collected</Button>
 
         {/* Rating & Release */}
-        <div className="flex gap-4 text-sm">
-          <div className="flex items-center gap-1">
-            <Star className="w-4 h-4 fill-primary text-primary" />
-            <span>Rating: {gameData.rating.toFixed(1)}</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <span>Release: {formattedReleaseDate}</span>
-          </div>
-        </div>
-
-        {/* Genre */}
-        <div className="flex items-center gap-2 text-sm">
-          <span className="text-muted-foreground">Genre:</span>
-          <span>{gameData.genres.map((genre) => genre.name).join(', ')}</span>
+        <div className="flex flex-wrap gap-2">
+          <Chip
+            icon={<Star className="w-4 h-4" />}
+            label="Rating"
+            value={gameData.rating.toFixed(1)}
+          />
+          <Chip
+            icon={<Calendar className="w-4 h-4" />}
+            label="Release"
+            value={formattedReleaseDate}
+          />
+          <Chip
+            icon={<PuzzleIcon className="w-4 h-4" />}
+            label="Genre"
+            value={gameData.genres.map((genre) => genre.name).join(', ')}
+          />
         </div>
 
         {/* Summary */}
         <div className="space-y-2">
-          <h2 className="font-semibold">Summary</h2>
-          <p className="text-sm text-muted-foreground">{gameData.summary}</p>
+          <Typography.H2>Summary</Typography.H2>
+          <Typography.H4>{gameData.summary}</Typography.H4>
         </div>
 
         {/* Platforms */}
         <div className="space-y-2">
-          <h2 className="font-semibold">Platforms</h2>
-          <p className="text-sm text-muted-foreground">
+          <Typography.H2>Platforms</Typography.H2>
+          <Typography.H4>
             {gameData.platforms.map((platform) => platform.name).join(', ')}
-          </p>
+          </Typography.H4>
         </div>
 
         {/* Media */}
-        <div className="space-y-2">
-          <h2 className="font-semibold">Media</h2>
-          <ImageGallery title="Media" images={gameData.screenshots} />
-        </div>
+        {gameData.screenshots.length > 0 && (
+          <div className="space-y-2">
+            <Typography.H2>Media</Typography.H2>
+            <ImageGallery title="Media" images={gameData.screenshots} />
+          </div>
+        )}
 
         {/* Similar Games */}
         <div className="space-y-2">
-          <h2 className="font-semibold">Similar games</h2>
+          <Typography.H2 className="bg-gradient-to-l from-violet-600 to-violet-900 bg-clip-text text-transparent">
+            Similar games
+          </Typography.H2>
           <div className="grid grid-cols-3 gap-2">
             {gameData.similar_games.map((game) => (
-              <div key={game.id} className="aspect-[3/4] relative">
+              <Link
+                href={`/games/${game.id}/${generateSlug(game.name)}`}
+                key={game.id}
+                className="aspect-[3/4] relative hover:scale-105 hover:shadow-lg transition-transform"
+              >
                 <CustomImage
                   src={game.cover.url}
                   alt={game.name}
                   className="rounded-lg object-cover"
                   size="cover_big"
                 />
-              </div>
+              </Link>
             ))}
           </div>
         </div>

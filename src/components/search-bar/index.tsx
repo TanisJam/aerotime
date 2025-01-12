@@ -20,7 +20,7 @@ export const SearchBar = () => {
     setSearchQuery(event.target.value);
   };
   const onSelection = (name: string, id: number) => {
-    setSearchQuery(name);
+    setSearchQuery('');
     router.push(`/games/${id}/${generateSlug(name)}`);
   };
 
