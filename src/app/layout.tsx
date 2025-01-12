@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter, Readex_Pro } from 'next/font/google';
 import './globals.css';
-import { Header } from '@/components/header';
+import { Header, Layout } from '@/components/header';
 
 const inter = Inter({
   variable: '--font-inter',
@@ -24,13 +24,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${inter.variable} ${readexPro.variable}  antialiased`}>
-        <Header>
-          <h1 className="text-4xl font-bold ">AeroTime</h1>
-          <p className="text-lg ">Your gaming time, your legacy of fun.</p>
-        </Header>
+    <html lang="en" className="pointer-events-none ">
+      <body
+        className={`${inter.variable} ${readexPro.variable} antialiased relative pointer-events-none`}
+      >
+        <Header />
         {children}
+        <Layout />
       </body>
     </html>
   );
