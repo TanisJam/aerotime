@@ -56,7 +56,9 @@ export function ImageGallery({ images, title = 'Media' }: ImageGalleryProps) {
         open={selectedImage !== null}
         onOpenChange={() => setSelectedImage(null)}
       >
-        <DialogTitle>{title}</DialogTitle>
+        <DialogTitle
+        hidden
+        >{title}</DialogTitle>
         <DialogDescription>
           {selectedImage !== null && `${selectedImage + 1} of ${images.length}`}
         </DialogDescription>

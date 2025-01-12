@@ -37,6 +37,7 @@ export const fetchGameDetails = async (
   );
 
   const games: IGDBGame[] = response.data;
+
   return games.map((game) => ({
     id: game.id,
     name: game.name,
@@ -44,10 +45,10 @@ export const fetchGameDetails = async (
     first_release_date: game.first_release_date || 0,
     genres: game.genres || [],
     platforms: game.platforms || [],
-    rating: game.rating || 0,
+    rating: game.rating ? game.rating / 10 : 0,
     screenshots: game.screenshots || [],
     similar_games: game.similar_games || [],
-    summary: game.summary || '',
+    summary: game.summary || 'No summary available',
     involved_companies: game.involved_companies || [],
     yearsAgo: game.first_release_date
       ? Math.floor(

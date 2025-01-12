@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${readexPro.variable} antialiased relative`}
+        className={`${inter.variable} ${readexPro.variable} ${inter.style} font-[family-name:var(--font-inter)] antialiased relative`}
       >
         <Header />
         {children}

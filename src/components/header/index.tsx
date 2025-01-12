@@ -30,7 +30,7 @@ export const Header = () => {
       {gamemode && (
         <div className="absolute top-0 left-0 w-full  pointer-events-none animate-pulse glow-border" />
       )}
-      <div className="flex items-center gap-2 pt-8 mb-5">
+      <div className="flex sm:justify-center items-center gap-2 pt-8 mb-5">
         {pathname === '/' ? (
           <>
             <Logo />
@@ -42,7 +42,7 @@ export const Header = () => {
               variant={'icon'}
               size={'iconSm'}
               asChild
-              onClick={() => router.back()}
+              onClick={() => router.push('/')}
               className="text-violet-900"
             >
               <ArrowLeft size={20} />

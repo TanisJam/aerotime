@@ -62,7 +62,7 @@ export const Layout = ({
   }, [onChange]);
 
   return (
-    <div ref={containerRef} className="relative w-[90vw] max-w-[400px] mb-8">
+    <div ref={containerRef} className="relative w-[90vw] max-w-[400px] mb-8 sm:mx-auto">
       <motion.div
         className="bg-white shadow-sm backdrop-blur-sm border border-pink-600/20"
         animate={{
