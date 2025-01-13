@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import NextTopLoader from 'nextjs-toploader';
 import { Inter, Readex_Pro } from 'next/font/google';
 import { Toaster } from '@/components/ui/sonner';
 import './globals.css';
@@ -50,6 +51,9 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${readexPro.variable} ${inter.style} font-[family-name:var(--font-inter)] antialiased relative`}
       >
+        <NextTopLoader
+        color="#6727A6"
+        />
         <Header />
         {children}
         <Background />
