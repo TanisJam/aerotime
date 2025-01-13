@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SortTabs } from '@/components/sort-tabs';
 import { SortType } from '@/models/games.model';
 import Typography from '@/components/typography';
@@ -13,6 +13,11 @@ export function SavedGames() {
   const { collectedGames, removeGame, setSortType } = useGamesStore();
   const [activeTab, setActiveTab] = useState(SortType.LAST_ADDED);
   const { showGameToast } = useGameToast();
+
+  useEffect(() => {
+    setSortType(activeTab);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleRemoveGame = (gameId: number, name: string) => {
     removeGame(gameId);

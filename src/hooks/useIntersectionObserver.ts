@@ -11,7 +11,7 @@ export const useIntersectionObserver = ({
   root = null,
   rootMargin = '0px',
 }: UseIntersectionObserverProps = {}) => {
-  const [isIntersecting, setIsIntersecting] = useState(false);
+  const [isIntersecting, setIsIntersecting] = useState(true);
   const [distance, setDistance] = useState<number>(0);
   const targetRef = useRef<HTMLDivElement>(null);
 
