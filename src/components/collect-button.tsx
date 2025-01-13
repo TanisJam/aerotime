@@ -22,7 +22,7 @@ export const CollectButton = ({
   const handleAddGame = () => {
     if (!isCollected) {
       addGame({ id, name, image, first_release_date });
-      showGameToast('Game collected', 'collected');
+      showGameToast(name, 'collected');
     }
   };
 

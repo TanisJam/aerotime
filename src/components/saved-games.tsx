@@ -17,10 +17,9 @@ export function SavedGames() {
   const [activeTab, setActiveTab] = useState(SortType.LAST_ADDED);
   const { showGameToast } = useGameToast();
 
-  const handleRemoveGame = (gameId: number) => {
-    console.log('Removing game:', gameId);
+  const handleRemoveGame = (gameId: number, name: string) => {
     removeGame(gameId);
-    showGameToast('Game removed', 'removed');
+    showGameToast(name, 'removed');
   };
 
   const handleSortChange = (type: SortType) => {
@@ -55,7 +54,7 @@ export function SavedGames() {
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                handleRemoveGame(game.id);
+                handleRemoveGame(game.id, game.name);
               }}
             >
               <Trash2 className="h-4 w-4" />
