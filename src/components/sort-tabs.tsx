@@ -1,6 +1,8 @@
+import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
 import { cn } from '@/lib/utils';
 import { SortType } from '@/models';
 import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
 
 interface SortTabProps {
   activeTab: SortType;
@@ -14,32 +16,80 @@ const tabs = [
 ];
 
 export const SortTabs = ({ activeTab, handleSortChange }: SortTabProps) => {
+  const [selected, setSelected] = useState(activeTab);
+  const [buttonRefs] = useState(() => new Map<string, HTMLButtonElement>());
+  const { targetRef, isIntersecting, distance } = useIntersectionObserver({
+    threshold: 1,
+    rootMargin: '-1px 0px 0px 0px',
+  });
+
+  const getSelectedDimensions = () => {
+    const selectedButton = buttonRefs.get(selected);
+    if (!selectedButton) return { width: 0, left: 0 };
+
+    const rect = selectedButton.getBoundingClientRect();
+    const parentRect = selectedButton.parentElement?.getBoundingClientRect();
+
+    return {
+      width: rect.width,
+      left: parentRect ? rect.left - parentRect.left : 0,
+    };
+  };
+
+  const handleSelect = (tab: SortType) => {
+    setSelected(tab);
+    handleSortChange(tab);
+  };
+
+  useEffect(() => {
+    console.log('isIntersecting', isIntersecting);
+  }, [isIntersecting]);
+
+  useEffect(() => {
+    console.log('distance', distance);
+  }, [distance]);
+
   return (
-    <div className="relative mb-6 mt-4">
-      <div className="flex gap-2">
+    <div className="sticky top-0 mb-6 mt-4 z-10" ref={targetRef}>
+      <div className="flex">
+        <motion.div
+          className="absolute bg-violet-900 rounded-full"
+          initial={false}
+          animate={{
+            width: getSelectedDimensions().width,
+            x: getSelectedDimensions().left,
+          }}
+          transition={{
+            type: 'spring',
+            stiffness: 400,
+            damping: 30,
+          }}
+          style={{
+            height: 'calc(100% - 8px)',
+            top: '4px',
+          }}
+        />
+
         {tabs.map((tab) => (
           <button
             key={tab.id}
-            onClick={() => handleSortChange(tab.id as SortType)}
+            ref={(el) => {
+              if (el) buttonRefs.set(tab.id, el);
+            }}
+            onClick={() => handleSelect(tab.id)}
             className={cn(
-              'relative px-4 py-2 rounded-full transition-colors',
+              'relative p-3 rounded-full transition-colors text-sm font-medium',
               activeTab === tab.id ? 'text-white' : 'text-violet-900'
             )}
           >
-            <span className="relative" style={{ zIndex: 1 }}>
+            <motion.span
+              animate={{
+                opacity: activeTab === tab.id ? 1 : 0.7,
+              }}
+              transition={{ duration: 0.2 }}
+            >
               {tab.label}
-            </span>
-            {activeTab === tab.id && (
-              <motion.div
-                layoutId="active-tab"
-                className="absolute inset-0 bg-violet-900 rounded-full"
-                transition={{
-                  type: 'spring',
-                  bounce: 0.2,
-                  duration: 0.6,
-                }}
-              />
-            )}
+            </motion.span>
           </button>
         ))}
       </div>
