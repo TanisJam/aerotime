@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter, Readex_Pro } from 'next/font/google';
+import { Toaster } from '@/components/ui/sonner';
 import './globals.css';
 import { Header, Background } from '@/components/header';
 import { TITLE } from '@/models/constants';
@@ -17,6 +18,26 @@ const readexPro = Readex_Pro({
 export const metadata: Metadata = {
   title: TITLE,
   description: 'Your gaming time, your legacy of fun.',
+  openGraph: {
+    title: TITLE,
+    description: 'Your gaming time, your legacy of fun.',
+    url: 'https://aerotime.vercel.app/',
+    siteName: 'AeroTime',
+    images: [
+      {
+        url: '/ss.jpg',
+        width: 427,
+        height: 514,
+        alt: 'AeroTime - Your gaming time, your legacy of fun.',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  robots: {
+    follow: true,
+    index: true,
+  },
 };
 
 export default function RootLayout({
@@ -32,6 +53,12 @@ export default function RootLayout({
         <Header />
         {children}
         <Background />
+        <Toaster
+          position="bottom-center"
+          toastOptions={{
+            unstyled: true,
+          }}
+        />
       </body>
     </html>
   );

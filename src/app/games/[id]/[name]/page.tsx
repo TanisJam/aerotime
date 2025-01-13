@@ -21,10 +21,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const clientId = process.env.TWITCH_CLIENT_ID!;
   const [gameData] = await fetchGameDetails(Number(id), token, clientId);
 
+  const hash = gameData.cover.url.split('/').pop()?.split('.')[0];
+  const imgUrl = `https://images.igdb.com/igdb/image/upload/t_cover_big/${hash}.jpg`;
+
   return {
     title: gameData.name,
+    description: gameData.summary,
     openGraph: {
-      images: gameData.cover ? [gameData.cover.url] : [],
+      images: imgUrl || 'https://aerotime.vercel.app/igdb.png',
     },
   };
 }
@@ -40,7 +44,7 @@ export default async function Page({ params }: Props) {
     : 'No date available';
 
   return (
-    <div className="flex flex-col w-full max-w-md mx-auto min-h-screen">
+    <div className="flex flex-col w-full max-w-md md:max-w-5xl mx-auto min-h-screen">
       <div className="flex flex-col gap-4 p-4">
         {/* Header */}
         <div className="flex gap-3">
@@ -113,7 +117,7 @@ export default async function Page({ params }: Props) {
           <Typography.H2 className="bg-gradient-to-l from-violet-600 to-violet-900 bg-clip-text text-transparent">
             Similar games
           </Typography.H2>
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-3 md:grid-cols-4 gap-2">
             {gameData.similar_games.map((game) => (
               <Link
                 href={`/games/${game.id}/${generateSlug(game.name)}`}
