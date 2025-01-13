@@ -1,29 +1,26 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { useGamesStore } from '@/store/game-store';
 import { Trash2 } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
 import { generateSlug } from '@/lib/slugify.lib';
+import { Button } from '@/components/ui/button';
 import CustomImage from '@/components/custom-image';
+import { SortTabs } from '@/components/sort-tabs';
 import { SortType } from '@/models/games.model';
-import Link from 'next/link';
-
-const tabs = [
-  { id: SortType.LAST_ADDED, label: 'Last added' },
-  { id: SortType.NEWEST, label: 'Newest' },
-  { id: SortType.OLDEST, label: 'Oldest' },
-];
+import Typography from '@/components/typography';
+import { useGameToast } from '@/hooks';
 
 export function SavedGames() {
   const { collectedGames, removeGame, setSortType } = useGamesStore();
-  const [activeTab, setActiveTab] = useState('last-added');
+  const [activeTab, setActiveTab] = useState(SortType.LAST_ADDED);
+  const { showGameToast } = useGameToast();
 
   const handleRemoveGame = (gameId: number) => {
     console.log('Removing game:', gameId);
     removeGame(gameId);
+    showGameToast('Game removed', 'removed');
   };
 
   const handleSortChange = (type: SortType) => {
@@ -38,39 +35,9 @@ export function SavedGames() {
         zIndex: 0,
       }}
     >
-      <h1 className="text-2xl font-semibold text-purple-900 mb-6">
-        Saved games
-      </h1>
+      <Typography.H1>Saved games</Typography.H1>
 
-      <div className="relative mb-6">
-        <div className="flex gap-2">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => handleSortChange(tab.id as SortType)}
-              className={cn(
-                'relative px-4 py-2 rounded-full transition-colors',
-                activeTab === tab.id ? 'text-white' : 'text-purple-900'
-              )}
-            >
-              <span className="relative" style={{ zIndex: 1 }}>
-                {tab.label}
-              </span>
-              {activeTab === tab.id && (
-                <motion.div
-                  layoutId="active-tab"
-                  className="absolute inset-0 bg-purple-900 rounded-full"
-                  transition={{
-                    type: 'spring',
-                    bounce: 0.2,
-                    duration: 0.6,
-                  }}
-                />
-              )}
-            </button>
-          ))}
-        </div>
-      </div>
+      <SortTabs activeTab={activeTab} handleSortChange={handleSortChange} />
 
       <div className="grid grid-cols-3 md:grid-cols-4  gap-4">
         {collectedGames.map((game) => (

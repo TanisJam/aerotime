@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter, Readex_Pro } from 'next/font/google';
+import { Toaster } from '@/components/ui/sonner';
 import './globals.css';
 import { Header, Background } from '@/components/header';
 import { TITLE } from '@/models/constants';
@@ -32,6 +33,12 @@ export default function RootLayout({
         <Header />
         {children}
         <Background />
+        <Toaster
+          position="bottom-center"
+          toastOptions={{
+            unstyled: true,
+          }}
+        />
       </body>
     </html>
   );
