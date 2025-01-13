@@ -28,6 +28,7 @@ export const CollectButton = ({
 
   return (
     <Button
+      className="max-w-sm mx-auto w-full"
       variant={isCollected ? 'collected' : 'collect'}
       onClick={handleAddGame}
     >

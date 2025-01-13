@@ -4,7 +4,11 @@ import { useState } from 'react';
 import CustomImage from '@/components/custom-image';
 import { X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogDescription } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+} from '@/components/ui/dialog';
 import {
   Carousel,
   CarouselContent,
@@ -33,7 +37,7 @@ export function ImageGallery({ images, title = 'Media' }: ImageGalleryProps) {
       >
         <CarouselContent>
           {images.map((image, index) => (
-            <CarouselItem key={index} className="pl-2  basis-1/4">
+            <CarouselItem key={index} className="pl-2  basis-1/4 md:basis-1/12">
               <div
                 className="relative rounded-lg cursor-pointer"
                 onClick={() => setSelectedImage(index)}
@@ -56,9 +60,7 @@ export function ImageGallery({ images, title = 'Media' }: ImageGalleryProps) {
         open={selectedImage !== null}
         onOpenChange={() => setSelectedImage(null)}
       >
-        <DialogTitle
-        hidden
-        >{title}</DialogTitle>
+        <DialogTitle hidden>{title}</DialogTitle>
         <DialogDescription>
           {selectedImage !== null && `${selectedImage + 1} of ${images.length}`}
         </DialogDescription>
@@ -79,10 +81,10 @@ export function ImageGallery({ images, title = 'Media' }: ImageGalleryProps) {
             }}
             className="w-full "
           >
-            <CarouselContent className="">
+            <CarouselContent className="md:max-h-[720px]">
               {images.map((image, index) => (
                 <CarouselItem key={index}>
-                  <div className="relative w-full  flex items-center justify-center">
+                  <div className="relative w-full flex items-center justify-center">
                     <CustomImage
                       src={image.url}
                       alt={title}
