@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     siteName: 'AeroTime',
     images: [
       {
-        url: '/ss.jpg',
+        url: '/ss.png',
         width: 427,
         height: 514,
         alt: 'AeroTime - Your gaming time, your legacy of fun.',
