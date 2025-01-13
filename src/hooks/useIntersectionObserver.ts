@@ -1,55 +1,54 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react';
 
 interface UseIntersectionObserverProps {
-  threshold?: number
-  root?: Element | null
-  rootMargin?: string
+  threshold?: number;
+  root?: Element | null;
+  rootMargin?: string;
 }
 
 export const useIntersectionObserver = ({
   threshold = 0,
   root = null,
-  rootMargin = '0px'
+  rootMargin = '0px',
 }: UseIntersectionObserverProps = {}) => {
-  const [isIntersecting, setIsIntersecting] = useState(false)
-  const [distance, setDistance] = useState<number>(0)
-  const targetRef = useRef<HTMLDivElement>(null)
+  const [isIntersecting, setIsIntersecting] = useState(false);
+  const [distance, setDistance] = useState<number>(0);
+  const targetRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const calculateDistance = () => {
       if (targetRef.current) {
-        const rect = targetRef.current.getBoundingClientRect()
-        setDistance(rect.top)
+        const rect = targetRef.current.getBoundingClientRect();
+        setDistance(rect.top);
       }
-    }
+    };
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setIsIntersecting(entry.isIntersecting)
-        calculateDistance()
+        setIsIntersecting(entry.isIntersecting);
+        calculateDistance();
       },
       {
         threshold,
         root,
-        rootMargin
+        rootMargin,
       }
-    )
+    );
 
-    const currentTarget = targetRef.current
+    const currentTarget = targetRef.current;
     if (currentTarget) {
-      observer.observe(currentTarget)
+      observer.observe(currentTarget);
     }
 
-    // Actualizar la distancia en el scroll
-    window.addEventListener('scroll', calculateDistance)
+    window.addEventListener('scroll', calculateDistance);
 
     return () => {
       if (currentTarget) {
-        observer.unobserve(currentTarget)
+        observer.unobserve(currentTarget);
       }
-      window.removeEventListener('scroll', calculateDistance)
-    }
-  }, [threshold, root, rootMargin])
+      window.removeEventListener('scroll', calculateDistance);
+    };
+  }, [threshold, root, rootMargin]);
 
-  return { targetRef, isIntersecting, distance }
-}
+  return { targetRef, isIntersecting, distance };
+};
