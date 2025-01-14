@@ -1,6 +1,5 @@
 import React from 'react';
 import { Metadata } from 'next';
-import { generateSlug } from '@/lib/slugify.lib';
 import CustomImage from '@/components/custom-image';
 import { Star, Calendar, PuzzleIcon } from 'lucide-react';
 import { fetchGameDetails } from '@/services/api.service';
@@ -8,8 +7,8 @@ import { getAccessToken } from '@/services/auth.service';
 import { ImageGallery } from '@/components/image-gallery';
 import Typography from '@/components/typography';
 import { Chip } from '@/components/ui/chip';
-import Link from 'next/link';
 import { CollectButton } from '@/components/collect-button';
+import { GameCard } from '@/components/game-card';
 
 type Props = {
   params: Promise<{ id: string; name: string }>;
@@ -119,18 +118,7 @@ export default async function Page({ params }: Props) {
           </Typography.H2>
           <div className="grid grid-cols-3 md:grid-cols-4 gap-2">
             {gameData.similar_games.map((game) => (
-              <Link
-                href={`/games/${game.id}/${generateSlug(game.name)}`}
-                key={game.id}
-                className="aspect-[3/4] relative hover:scale-105 hover:shadow-lg transition-transform"
-              >
-                <CustomImage
-                  src={game.cover?.url}
-                  alt={game.name}
-                  className="rounded-lg object-cover"
-                  size="cover_big"
-                />
-              </Link>
+              <GameCard key={game.id} game={game} variant="similar" />
             ))}
           </div>
         </div>

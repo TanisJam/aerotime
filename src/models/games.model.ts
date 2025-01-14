@@ -42,5 +42,5 @@ export interface SavedGame
 export enum SortType {
   LAST_ADDED = 'last-added',
   NEWEST = 'newest',
-  OLDEST = 'oldest'
+  OLDEST = 'oldest',
 }

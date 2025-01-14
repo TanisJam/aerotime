@@ -7,6 +7,10 @@
   --shadow-color-light: #ff9e9e;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: Arial, Helvetica, sans-serif;
 }
